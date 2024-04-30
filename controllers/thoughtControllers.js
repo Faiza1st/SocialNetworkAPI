@@ -1,3 +1,4 @@
+const router = require('express').Router();
 const { Thought, User } = require('../models');
 const { Types } = require('mongoose');
 
@@ -13,7 +14,7 @@ const thoughtController = {
     },
     async getoneThought(req, res) {
         try {
-            const thoughtId = await Thought.findOne({ _id: req.params.id })
+            const thoughtId = await Thought.findOne({ _id: req.params.thoughtId })
                 .select("-__v")
                 .populate('reactions');
 
@@ -47,7 +48,7 @@ const thoughtController = {
     async thoughtUpdated(req, res) {
         try {
             const updatedThought = await Thought.findOneAndUpdate(
-                { _id: req.params.id },
+                { _id: req.params.thoughtId },
                 { $set: req.body },
                 { runValidators: true, new: true }
             );
@@ -62,9 +63,9 @@ const thoughtController = {
             res.status(500).json({ message: 'Could not update!', err });
         }
     },
-    async deleteThough(req, res) {
+    async deleteThought(req, res) {
         try {
-            const deletedThought = await Thought.findOneAndDelete({ _id: req.params.id });
+            const deletedThought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
             if (!deletedThought) {
                 return res.status(404).json({ message: "No Thought with this id was found" });
             }
@@ -93,9 +94,9 @@ const thoughtController = {
     },
     async reactionDelete(req, res) {
         try {
-            const removed = await Thought.findByIdAndDelete(
+            const removed = await Thought.findByIdAndUpdate(
                 { _id: req.params.thoughtId },
-                { $pull: { reactions: { reactionId: req.params.id } } },
+                { $pull: { reactions: { _id: req.params.reactionId } } },
                 { runValidators: true, new: true }
             );
             if (!removed) {

@@ -4,11 +4,11 @@ const {
     getThoughtsAll,
     getoneThought,
     thoughtCreate,
-    deleteThough,
+    deleteThought,
     thoughtUpdated,
     reactionCreate,
     reactionDelete,
-} = require('../../controllers/thoughtControllers');
+} = require('../../controllers/thoughtControllers')
 
 
 router.route('/')
@@ -18,7 +18,7 @@ router.route('/')
 
 router.route('/:thoughtId')
 .get(getoneThought)
-.delete(deleteThough)
+.delete(deleteThought)
 .put(thoughtUpdated);
 
 

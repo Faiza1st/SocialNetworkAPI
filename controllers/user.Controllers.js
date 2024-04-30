@@ -11,22 +11,23 @@ const controllerUser = {
             }
         },
 
-    async getOneUser(req, res) {
-        try {
-            const userData = await User.findByPk({_id: req.params.id})
-            .select('-__v')
-            .population('friends')
-
-            if (!user) {
-                res.status(404).json({ message: "No user found with this id!" });
+        async getOneUser(req, res) {
+            try {
+              const user = await User.findOne({ _id: req.params.userId })
+                .select('-__v')
+                .populate('friends')
+        
+              if (!user) {
+                return res.status(404).json({ message: 'No user found with that ID' })
+              }
+              res.status(200).json(user)
             }
-            res.status(200).json(user)
-        }
-        catch(err) {
-            res.status(500).json({err});
-            return;
-    }
-},
+            catch (err) {
+              res.status(500).json({ err });
+              return;
+            }
+            
+        },
 
 async userCreate(req, res) {
     try {
