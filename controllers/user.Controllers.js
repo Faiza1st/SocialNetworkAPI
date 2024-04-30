@@ -1,10 +1,10 @@
-const {User } = require ('../models');
+const { User } = require ('../models');
 
 const controllerUser = {
     async userGet (req, res) {
         try{
-            const users = await User.findAll();
-            res.statues(200).json(users)
+            const users = await User.find();
+            res.status(200).json(users)
             }catch(err){
                 console.log(err);
                 res.status(500).json({message: 'Error getting the data'})
@@ -70,3 +70,5 @@ async userCreate(req, res) {
         }
       }
     }
+
+module.exports = controllerUser;
